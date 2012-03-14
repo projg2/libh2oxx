@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: @PACKAGE@
+Description: C++ bindings for libh2o
+Version: @VERSION@
+Libs: -L${libdir} -lh2oxx
+Cflags: -I${includedir}/h2o/cxx
