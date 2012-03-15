@@ -1,0 +1,35 @@
+/* libh2o++ -- steam & water properties
+ * (c) 2012 Michał Górny
+ * Released under the terms of the 2-clause BSD license
+ */
+
+#pragma once
+
+#ifndef _H2O_HXX
+#define _H2O_HXX 1
+
+namespace h2o
+{
+	namespace internals
+	{
+#		include <h2o/boundaries.h>
+	};
+
+	class H2O
+	{
+		double _p, _T;
+		enum internals::h2o_region _region;
+
+		void _determine_region();
+
+	public:
+		H2O(double p, double T);
+
+		double p() const;
+		double T() const;
+	};
+};
+
+#endif /*_H2O_HXX*/
+
+// vim:syn=cpp
