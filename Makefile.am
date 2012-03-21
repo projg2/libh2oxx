@@ -13,3 +13,10 @@ libh2oxx_la_LDFLAGS = -version-info 0:0:0
 h2oxx_HEADERS = include/h2o
 
 pkgconfig_DATA = libh2oxx.pc
+
+TESTS = if97-test-values
+check_PROGRAMS = $(TESTS)
+
+if97_test_values_SOURCES = tests/if97-test-values.cxx
+if97_test_values_CPPFLAGS = -Iinclude
+if97_test_values_LDADD = libh2oxx.la
