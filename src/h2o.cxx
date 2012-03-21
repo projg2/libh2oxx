@@ -17,6 +17,7 @@ namespace h2o
 	{
 #		include <h2o/region1.h>
 #		include <h2o/region2.h>
+#		include <h2o/region5.h>
 	};
 };
 
@@ -59,7 +60,7 @@ static twoarg_func_t funcs_v_pT[H2O_REGION_MAX] = {
 	h2o_region2_v_pT,
 	not_supported,
 	not_supported,
-	not_supported
+	h2o_region5_v_pT
 };
 
 double H2O::v()
@@ -76,7 +77,7 @@ static twoarg_func_t funcs_u_pT[H2O_REGION_MAX] = {
 	h2o_region2_u_pT,
 	not_supported,
 	not_supported,
-	not_supported
+	h2o_region5_u_pT
 };
 
 double H2O::u()
@@ -93,7 +94,7 @@ static twoarg_func_t funcs_h_pT[H2O_REGION_MAX] = {
 	h2o_region2_h_pT,
 	not_supported,
 	not_supported,
-	not_supported
+	h2o_region5_h_pT
 };
 
 double H2O::h()
@@ -110,7 +111,7 @@ static twoarg_func_t funcs_s_pT[H2O_REGION_MAX] = {
 	h2o_region2_s_pT,
 	not_supported,
 	not_supported,
-	not_supported
+	h2o_region5_s_pT
 };
 
 double H2O::s()
