@@ -17,13 +17,13 @@ namespace h2o
 
 	class H2O
 	{
-		double _p, _T;
+		double _arg1, _arg2;
 		enum internals::h2o_region _region;
 
-		void _determine_region();
-
+		H2O();
 	public:
 		H2O(double p, double T);
+		static H2O Tx(double T, double x);
 
 		double p();
 		double T();

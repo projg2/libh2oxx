@@ -53,6 +53,14 @@ void check_vuhs(h2o::H2O* obj,
 	delete obj;
 }
 
+void check_psat(double T, double p_expected, double p_precision)
+{
+	h2o::H2O obj = h2o::H2O::Tx(T, 1);
+
+	check(obj.p(), p_expected, p_precision,
+			"p", "T", T, "x", 1);
+}
+
 int main(void)
 {
 	check_vuhs(new h2o::H2O(3., 300),
@@ -111,6 +119,10 @@ int main(void)
 			0.657122604E+4, 1E-2,
 			0.853640523E+1, 1E-5,
 			"p", 30, "T", 2000);
+
+	check_psat(300, 0.353658941E-2, 1E-11);
+	check_psat(500, 0.263889776E+1, 1E-8);
+	check_psat(600, 0.123443146E+2, 1E-7);
 
 	return exit_status;
 }
