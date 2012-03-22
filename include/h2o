@@ -27,6 +27,7 @@ namespace h2o
 
 		double p();
 		double T();
+		double x();
 
 		double v();
 		double u();

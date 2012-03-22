@@ -71,6 +71,21 @@ double H2O::T()
 	return _arg2;
 }
 
+double H2O::x()
+{
+	switch (_region)
+	{
+		case H2O_REGION1:
+			return 0;
+		case H2O_REGION2:
+			return 1;
+		case H2O_REGION4:
+			return _arg2;
+		default:
+			not_supported(0, 0);
+	}
+}
+
 static twoarg_func_t funcs_v_base[H2O_REGION_MAX] = {
 	not_supported,
 	h2o_region1_v_pT,
