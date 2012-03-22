@@ -25,14 +25,14 @@ namespace h2o
 		H2O(double p, double T);
 		static H2O Tx(double T, double x);
 
-		double p();
-		double T();
-		double x();
+		double p() const;
+		double T() const;
+		double x() const;
 
-		double v();
-		double u();
-		double h();
-		double s();
+		double v() const;
+		double u() const;
+		double h() const;
+		double s() const;
 	};
 };
 

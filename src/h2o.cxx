@@ -57,21 +57,21 @@ H2O H2O::Tx(double T, double x)
 	return ret;
 }
 
-double H2O::p()
+double H2O::p() const
 {
 	if (_region == H2O_REGION4)
 		return h2o_saturation_p_T(_arg1);
 	return _arg1;
 }
 
-double H2O::T()
+double H2O::T() const
 {
 	if (_region == H2O_REGION4)
 		return _arg1;
 	return _arg2;
 }
 
-double H2O::x()
+double H2O::x() const
 {
 	switch (_region)
 	{
@@ -95,7 +95,7 @@ static twoarg_func_t funcs_v_base[H2O_REGION_MAX] = {
 	h2o_region5_v_pT
 };
 
-double H2O::v()
+double H2O::v() const
 {
 	return funcs_v_base[_region](_arg1, _arg2);
 }
@@ -109,7 +109,7 @@ static twoarg_func_t funcs_u_base[H2O_REGION_MAX] = {
 	h2o_region5_u_pT
 };
 
-double H2O::u()
+double H2O::u() const
 {
 	return funcs_u_base[_region](_arg1, _arg2);
 }
@@ -123,7 +123,7 @@ static twoarg_func_t funcs_h_base[H2O_REGION_MAX] = {
 	h2o_region5_h_pT
 };
 
-double H2O::h()
+double H2O::h() const
 {
 	return funcs_h_base[_region](_arg1, _arg2);
 }
@@ -137,7 +137,7 @@ static twoarg_func_t funcs_s_base[H2O_REGION_MAX] = {
 	h2o_region5_s_pT
 };
 
-double H2O::s()
+double H2O::s() const
 {
 	return funcs_s_base[_region](_arg1, _arg2);
 }
