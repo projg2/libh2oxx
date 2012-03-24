@@ -62,12 +62,30 @@ H2O H2O::Tx(double T, double x)
 	return ret;
 }
 
-static twoarg_func_t funcs_T_ps_r2[H2O_REGION2_MAX] = {
-	out_of_range,
-	h2o_region2a_T_ps,
-	h2o_region2b_T_ps,
-	h2o_region2c_T_ps
-};
+static double region2_T_ps(double p, double s)
+{
+	twoarg_func_t T_getter;
+
+	switch (h2o_region2_subregion_ps(p, s))
+	{
+		case H2O_REGION2_OUT_OF_RANGE:
+			T_getter = &out_of_range;
+			break;
+		case H2O_REGION2A:
+			T_getter = &h2o_region2a_T_ps;
+			break;
+		case H2O_REGION2B:
+			T_getter = &h2o_region2b_T_ps;
+			break;
+		case H2O_REGION2C:
+			T_getter = &h2o_region2c_T_ps;
+			break;
+		default:
+			T_getter = &not_supported;
+	}
+
+	return T_getter(p, s);
+}
 
 H2O H2O::ps(double p, double s)
 {
@@ -81,12 +99,13 @@ H2O H2O::ps(double p, double s)
 			T_getter = &h2o_region1_T_ps;
 			break;
 		case H2O_REGION2:
-			T_getter = funcs_T_ps_r2[h2o_region2_subregion_ps(p, s)];
+			T_getter = &region2_T_ps;
 			break;
 		case H2O_REGION_OUT_OF_RANGE:
-			out_of_range(p, s);
+			T_getter = &out_of_range;
+			break;
 		default:
-			not_supported(0, 0);
+			T_getter = &not_supported;
 	}
 
 	return H2O(p, T_getter(p, s));
@@ -121,58 +140,102 @@ double H2O::x() const
 	}
 }
 
-static twoarg_func_t funcs_v_base[H2O_REGION_MAX] = {
-	not_supported,
-	h2o_region1_v_pT,
-	h2o_region2_v_pT,
-	not_supported,
-	h2o_region4_v_Tx,
-	h2o_region5_v_pT
-};
-
 double H2O::v() const
 {
-	return funcs_v_base[_region](_arg1, _arg2);
-}
+	twoarg_func_t func;
 
-static twoarg_func_t funcs_u_base[H2O_REGION_MAX] = {
-	not_supported,
-	h2o_region1_u_pT,
-	h2o_region2_u_pT,
-	not_supported,
-	h2o_region4_u_Tx,
-	h2o_region5_u_pT
-};
+	switch (_region)
+	{
+		case H2O_REGION1:
+			func = &h2o_region1_v_pT;
+			break;
+		case H2O_REGION2:
+			func = &h2o_region2_v_pT;
+			break;
+		case H2O_REGION4:
+			func = &h2o_region4_v_Tx;
+			break;
+		case H2O_REGION5:
+			func = &h2o_region5_v_pT;
+			break;
+		default:
+			func = &not_supported;
+	}
+
+	return func(_arg1, _arg2);
+}
 
 double H2O::u() const
 {
-	return funcs_u_base[_region](_arg1, _arg2);
-}
+	twoarg_func_t func;
 
-static twoarg_func_t funcs_h_base[H2O_REGION_MAX] = {
-	not_supported,
-	h2o_region1_h_pT,
-	h2o_region2_h_pT,
-	not_supported,
-	h2o_region4_h_Tx,
-	h2o_region5_h_pT
-};
+	switch (_region)
+	{
+		case H2O_REGION1:
+			func = &h2o_region1_u_pT;
+			break;
+		case H2O_REGION2:
+			func = &h2o_region2_u_pT;
+			break;
+		case H2O_REGION4:
+			func = &h2o_region4_u_Tx;
+			break;
+		case H2O_REGION5:
+			func = &h2o_region5_u_pT;
+			break;
+		default:
+			func = &not_supported;
+	}
+
+	return func(_arg1, _arg2);
+}
 
 double H2O::h() const
 {
-	return funcs_h_base[_region](_arg1, _arg2);
-}
+	twoarg_func_t func;
 
-static twoarg_func_t funcs_s_base[H2O_REGION_MAX] = {
-	not_supported,
-	h2o_region1_s_pT,
-	h2o_region2_s_pT,
-	not_supported,
-	h2o_region4_s_Tx,
-	h2o_region5_s_pT
-};
+	switch (_region)
+	{
+		case H2O_REGION1:
+			func = &h2o_region1_h_pT;
+			break;
+		case H2O_REGION2:
+			func = &h2o_region2_h_pT;
+			break;
+		case H2O_REGION4:
+			func = &h2o_region4_h_Tx;
+			break;
+		case H2O_REGION5:
+			func = &h2o_region5_h_pT;
+			break;
+		default:
+			func = &not_supported;
+	}
+
+	return func(_arg1, _arg2);
+}
 
 double H2O::s() const
 {
-	return funcs_s_base[_region](_arg1, _arg2);
+	twoarg_func_t func;
+
+	switch (_region)
+	{
+		case H2O_REGION1:
+			func = &h2o_region1_s_pT;
+			break;
+		case H2O_REGION2:
+			func = &h2o_region2_s_pT;
+			break;
+		case H2O_REGION4:
+			func = &h2o_region4_s_Tx;
+			break;
+		case H2O_REGION5:
+			func = &h2o_region5_s_pT;
+			break;
+		default:
+			func = &not_supported;
+	}
+
+	return func(_arg1, _arg2);
 }
