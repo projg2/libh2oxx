@@ -11,6 +11,7 @@
 
 #include <cmath>
 #include <cstdio>
+#include <stdexcept>
 
 int exit_status;
 
@@ -33,6 +34,37 @@ void check(double result, double expected, double precision, const char* call,
 				result);
 }
 
+typedef double (h2o::H2O::*property_getter)() const;
+
+const char* name_by_prop(property_getter prop)
+{
+	if (prop == &h2o::H2O::p)
+		return "p";
+	else if (prop == &h2o::H2O::T)
+		return "T";
+	else if (prop == &h2o::H2O::x)
+		return "x";
+	else if (prop == &h2o::H2O::u)
+		return "u";
+	else if (prop == &h2o::H2O::h)
+		return "h";
+	else if (prop == &h2o::H2O::s)
+		return "s";
+	else if (prop == &h2o::H2O::v)
+		return "v";
+
+	throw std::runtime_error("Unknown property to name_by_prop()");
+}
+
+void check_any(const h2o::H2O& obj, property_getter prop,
+		double expected, double precision,
+		property_getter arg1_prop, property_getter arg2_prop)
+{
+	check((obj.*prop)(), expected, precision, name_by_prop(prop),
+			name_by_prop(arg1_prop), (obj.*arg1_prop)(),
+			name_by_prop(arg2_prop), (obj.*arg2_prop)());
+}
+
 void check_vuhs(const h2o::H2O& obj,
 		double v_expected, double v_precision,
 		double u_expected, double u_precision,
@@ -49,14 +81,6 @@ void check_vuhs(const h2o::H2O& obj,
 			arg1, arg1_val, arg2, arg2_val);
 	check(obj.s(), s_expected, s_precision, "s",
 			arg1, arg1_val, arg2, arg2_val);
-}
-
-void check_psat(double T, double p_expected, double p_precision)
-{
-	h2o::H2O obj = h2o::H2O::Tx(T, 1);
-
-	check(obj.p(), p_expected, p_precision,
-			"p", "T", T, "x", 1);
 }
 
 int main(void)
@@ -118,9 +142,12 @@ int main(void)
 			0.853640523E+1, 1E-8,
 			"p", 30, "T", 2000);
 
-	check_psat(300, 0.353658941E-2, 1E-11);
-	check_psat(500, 0.263889776E+1, 1E-8);
-	check_psat(600, 0.123443146E+2, 1E-7);
+	check_any(h2o::H2O::Tx(300, 1), &h2o::H2O::p, 0.353658941E-2, 1E-11,
+			&h2o::H2O::T, &h2o::H2O::x);
+	check_any(h2o::H2O::Tx(500, 1), &h2o::H2O::p, 0.263889776E+1, 1E-8,
+			&h2o::H2O::T, &h2o::H2O::x);
+	check_any(h2o::H2O::Tx(600, 1), &h2o::H2O::p, 0.123443146E+2, 1E-7,
+			&h2o::H2O::T, &h2o::H2O::x);
 
 	return exit_status;
 }
