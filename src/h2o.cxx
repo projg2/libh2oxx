@@ -93,6 +93,12 @@ H2O H2O::ps(double p, double s)
 
 	twoarg_func_t T_getter;
 
+	if (region == H2O_REGION4)
+	{
+		double T = h2o_saturation_T_p(p);
+		return H2O::Tx(T, h2o_region4_x_Ts(T, s));
+	}
+
 	switch (region)
 	{
 		case H2O_REGION1:
