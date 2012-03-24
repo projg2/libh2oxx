@@ -155,6 +155,46 @@ int main(void)
 			0.123443146E+2, 1E-7,
 			&h2o::H2O::T, &h2o::H2O::x);
 
+	// Region 1, f(p, h)
+	check_any(h2o::H2O::ph(3., 500.), &h2o::H2O::T,
+			0.391798509E+3, 1E-6,
+			&h2o::H2O::p, &h2o::H2O::s);
+	check_any(h2o::H2O::ph(80, 500.), &h2o::H2O::T,
+			0.378108626E+3, 1E-6,
+			&h2o::H2O::p, &h2o::H2O::s);
+	check_any(h2o::H2O::ph(80, 1500), &h2o::H2O::T,
+			0.611041229E+3, 1E-6,
+			&h2o::H2O::p, &h2o::H2O::s);
+
+	// Region 2, f(p, h)
+	check_any(h2o::H2O::ph(1E-3, 3000), &h2o::H2O::T,
+			0.534433241E3, 1E-6,
+			&h2o::H2O::p, &h2o::H2O::s);
+	check_any(h2o::H2O::ph(3.00, 3000), &h2o::H2O::T,
+			0.575373370E3, 1E-6,
+			&h2o::H2O::p, &h2o::H2O::s);
+	check_any(h2o::H2O::ph(3.00, 4000), &h2o::H2O::T,
+			0.101077577E4, 1E-5,
+			&h2o::H2O::p, &h2o::H2O::s);
+	check_any(h2o::H2O::ph(5.00, 3500), &h2o::H2O::T,
+			0.801299102E3, 1E-6,
+			&h2o::H2O::p, &h2o::H2O::s);
+	check_any(h2o::H2O::ph(5.00, 4000), &h2o::H2O::T,
+			0.101531583E4, 1E-5,
+			&h2o::H2O::p, &h2o::H2O::s);
+	check_any(h2o::H2O::ph(25.0, 3500), &h2o::H2O::T,
+			0.875279054E3, 1E-6,
+			&h2o::H2O::p, &h2o::H2O::s);
+	check_any(h2o::H2O::ph(40.0, 2700), &h2o::H2O::T,
+			0.743056411E3, 1E-6,
+			&h2o::H2O::p, &h2o::H2O::s);
+	check_any(h2o::H2O::ph(60.0, 2700), &h2o::H2O::T,
+			0.791137067E3, 1E-6,
+			&h2o::H2O::p, &h2o::H2O::s);
+	check_any(h2o::H2O::ph(60.0, 3200), &h2o::H2O::T,
+			0.882756860E3, 1E-6,
+			&h2o::H2O::p, &h2o::H2O::s);
+
 	// Region 1, f(p, s)
 	check_any(h2o::H2O::ps(3., 0.5), &h2o::H2O::T,
 			0.307842258E+3, 1E-6,
