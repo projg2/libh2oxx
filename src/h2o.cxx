@@ -108,7 +108,14 @@ H2O H2O::ps(double p, double s)
 			T_getter = &not_supported;
 	}
 
-	return H2O(p, T_getter(p, s));
+	double T = T_getter(p, s);
+	H2O ret;
+
+	ret._arg1 = p;
+	ret._arg2 = T;
+	ret._region = region;
+
+	return ret;
 }
 
 double H2O::p() const
