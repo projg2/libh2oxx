@@ -33,6 +33,11 @@ static double not_supported(double, double)
 	throw std::runtime_error("Requested function not implemented.");
 };
 
+static double out_of_range(double, double)
+{
+	throw std::range_error("Requested parameters out-of-range.");
+};
+
 H2O::H2O()
 {
 }
@@ -43,7 +48,7 @@ H2O::H2O(double p, double T)
 	_region = h2o_region_pT(p, T);
 
 	if (_region == H2O_REGION_OUT_OF_RANGE)
-		throw std::range_error("(p,T) parameters out of range");
+		out_of_range(p, T);
 }
 
 H2O H2O::Tx(double T, double x)
@@ -55,6 +60,36 @@ H2O H2O::Tx(double T, double x)
 	ret._region = H2O_REGION4;
 
 	return ret;
+}
+
+static twoarg_func_t funcs_T_ps_r2[H2O_REGION2_MAX] = {
+	out_of_range,
+	h2o_region2a_T_ps,
+	h2o_region2b_T_ps,
+	h2o_region2c_T_ps
+};
+
+H2O H2O::ps(double p, double s)
+{
+	enum h2o_region region = h2o_region_ps(p, s);
+
+	twoarg_func_t T_getter;
+
+	switch (region)
+	{
+		case H2O_REGION1:
+			T_getter = &h2o_region1_T_ps;
+			break;
+		case H2O_REGION2:
+			T_getter = funcs_T_ps_r2[h2o_region2_subregion_ps(p, s)];
+			break;
+		case H2O_REGION_OUT_OF_RANGE:
+			out_of_range(p, s);
+		default:
+			not_supported(0, 0);
+	}
+
+	return H2O(p, T_getter(p, s));
 }
 
 double H2O::p() const

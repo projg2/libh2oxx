@@ -84,6 +84,7 @@ void check_vuhs(const h2o::H2O& obj,
 
 int main(void)
 {
+	// Region 1
 	check_vuhs(h2o::H2O(3., 300),
 			0.100215168E-2, 1E-11,
 			0.112324818E+3, 1E-6,
@@ -103,6 +104,7 @@ int main(void)
 			0.258041912E+1, 1E-8,
 			&h2o::H2O::p, &h2o::H2O::T);
 
+	// Region 2
 	check_vuhs(h2o::H2O(35E-4, 300),
 			0.394913866E+2, 1E-7,
 			0.241169160E+4, 1E-5,
@@ -122,6 +124,7 @@ int main(void)
 			0.517540298E+1, 1E-8,
 			&h2o::H2O::p, &h2o::H2O::T);
 
+	// Region 5
 	check_vuhs(h2o::H2O(.5, 1500),
 			0.138455090E+1, 1E-8,
 			0.452749310E+4, 1E-5,
@@ -141,12 +144,56 @@ int main(void)
 			0.853640523E+1, 1E-8,
 			&h2o::H2O::p, &h2o::H2O::T);
 
-	check_any(h2o::H2O::Tx(300, 1), &h2o::H2O::p, 0.353658941E-2, 1E-11,
+	// saturation line
+	check_any(h2o::H2O::Tx(300, 1), &h2o::H2O::p,
+			0.353658941E-2, 1E-11,
 			&h2o::H2O::T, &h2o::H2O::x);
-	check_any(h2o::H2O::Tx(500, 1), &h2o::H2O::p, 0.263889776E+1, 1E-8,
+	check_any(h2o::H2O::Tx(500, 1), &h2o::H2O::p,
+			0.263889776E+1, 1E-8,
 			&h2o::H2O::T, &h2o::H2O::x);
-	check_any(h2o::H2O::Tx(600, 1), &h2o::H2O::p, 0.123443146E+2, 1E-7,
+	check_any(h2o::H2O::Tx(600, 1), &h2o::H2O::p,
+			0.123443146E+2, 1E-7,
 			&h2o::H2O::T, &h2o::H2O::x);
+
+	// Region 1, f(p, s)
+	check_any(h2o::H2O::ps(3., 0.5), &h2o::H2O::T,
+			0.307842258E+3, 1E-6,
+			&h2o::H2O::p, &h2o::H2O::s);
+	check_any(h2o::H2O::ps(80, 0.5), &h2o::H2O::T,
+			0.309979785E+3, 1E-6,
+			&h2o::H2O::p, &h2o::H2O::s);
+	check_any(h2o::H2O::ps(80, 3.0), &h2o::H2O::T,
+			0.565899909E+3, 1E-6,
+			&h2o::H2O::p, &h2o::H2O::s);
+
+	// Region 2, f(p, s)
+	check_any(h2o::H2O::ps(0.1, 7.50), &h2o::H2O::T,
+			0.399517097E3, 1E-6,
+			&h2o::H2O::p, &h2o::H2O::s);
+	check_any(h2o::H2O::ps(0.1, 8.00), &h2o::H2O::T,
+			0.514127081E3, 1E-6,
+			&h2o::H2O::p, &h2o::H2O::s);
+	check_any(h2o::H2O::ps(2.5, 8.00), &h2o::H2O::T,
+			0.103984917E4, 1E-5,
+			&h2o::H2O::p, &h2o::H2O::s);
+	check_any(h2o::H2O::ps(8.0, 6.00), &h2o::H2O::T,
+			0.600484040E3, 1E-6,
+			&h2o::H2O::p, &h2o::H2O::s);
+	check_any(h2o::H2O::ps(8.0, 7.50), &h2o::H2O::T,
+			0.106495556E4, 1E-5,
+			&h2o::H2O::p, &h2o::H2O::s);
+	check_any(h2o::H2O::ps(90., 6.00), &h2o::H2O::T,
+			0.103801126E4, 1E-5,
+			&h2o::H2O::p, &h2o::H2O::s);
+	check_any(h2o::H2O::ps(20., 5.75), &h2o::H2O::T,
+			0.697992849E3, 1E-6,
+			&h2o::H2O::p, &h2o::H2O::s);
+	check_any(h2o::H2O::ps(80., 5.25), &h2o::H2O::T,
+			0.854011484E3, 1E-6,
+			&h2o::H2O::p, &h2o::H2O::s);
+	check_any(h2o::H2O::ps(80., 5.75), &h2o::H2O::T,
+			0.949017998E3, 1E-6,
+			&h2o::H2O::p, &h2o::H2O::s);
 
 	return exit_status;
 }
