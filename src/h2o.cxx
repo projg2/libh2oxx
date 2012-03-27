@@ -17,6 +17,7 @@ namespace h2o
 	{
 #		include <h2o/region1.h>
 #		include <h2o/region2.h>
+#		include <h2o/region3.h>
 #		include <h2o/region4.h>
 #		include <h2o/region5.h>
 #		include <h2o/saturation.h>
@@ -186,11 +187,29 @@ H2O H2O::ps(double p, double s)
 	return ret;
 }
 
+H2O H2O::rhoT(double rho, double T)
+{
+	H2O ret;
+
+	ret._arg1 = rho;
+	ret._arg2 = T;
+	ret._region = H2O_REGION3;
+	// XXX: region3 boundaries
+
+	return ret;
+}
+
 double H2O::p() const
 {
-	if (_region == H2O_REGION4)
-		return h2o_saturation_p_T(_arg1);
-	return _arg1;
+	switch (_region)
+	{
+		case H2O_REGION3:
+			return h2o_region3_p_rhoT(_arg1, _arg2);
+		case H2O_REGION4:
+			return h2o_saturation_p_T(_arg1);
+		default:
+			return _arg1;
+	}
 }
 
 double H2O::T() const
@@ -215,6 +234,18 @@ double H2O::x() const
 	}
 }
 
+double H2O::rho() const
+{
+	if (_region == H2O_REGION3)
+		return _arg1;
+	return 1/v();
+}
+
+static double region3_v_rhoT(double rho, double T)
+{
+	return 1/rho;
+}
+
 double H2O::v() const
 {
 	twoarg_func_t func;
@@ -226,6 +257,9 @@ double H2O::v() const
 			break;
 		case H2O_REGION2:
 			func = &h2o_region2_v_pT;
+			break;
+		case H2O_REGION3:
+			func = &region3_v_rhoT;
 			break;
 		case H2O_REGION4:
 			func = &h2o_region4_v_Tx;
@@ -252,6 +286,9 @@ double H2O::u() const
 		case H2O_REGION2:
 			func = &h2o_region2_u_pT;
 			break;
+		case H2O_REGION3:
+			func = &h2o_region3_u_rhoT;
+			break;
 		case H2O_REGION4:
 			func = &h2o_region4_u_Tx;
 			break;
@@ -277,6 +314,9 @@ double H2O::h() const
 		case H2O_REGION2:
 			func = &h2o_region2_h_pT;
 			break;
+		case H2O_REGION3:
+			func = &h2o_region3_h_rhoT;
+			break;
 		case H2O_REGION4:
 			func = &h2o_region4_h_Tx;
 			break;
@@ -301,6 +341,9 @@ double H2O::s() const
 			break;
 		case H2O_REGION2:
 			func = &h2o_region2_s_pT;
+			break;
+		case H2O_REGION3:
+			func = &h2o_region3_s_rhoT;
 			break;
 		case H2O_REGION4:
 			func = &h2o_region4_s_Tx;

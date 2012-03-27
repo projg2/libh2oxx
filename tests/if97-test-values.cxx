@@ -52,6 +52,8 @@ const char* name_by_prop(property_getter prop)
 		return "s";
 	else if (prop == &h2o::H2O::v)
 		return "v";
+	else if (prop == &h2o::H2O::rho)
+		return "rho";
 
 	throw std::runtime_error("Unknown property to name_by_prop()");
 }
@@ -73,6 +75,23 @@ void check_vuhs(const h2o::H2O& obj,
 		property_getter arg1_prop, property_getter arg2_prop)
 {
 	check_any(obj, &h2o::H2O::v, v_expected, v_precision,
+			arg1_prop, arg2_prop);
+	check_any(obj, &h2o::H2O::u, u_expected, u_precision,
+			arg1_prop, arg2_prop);
+	check_any(obj, &h2o::H2O::h, h_expected, h_precision,
+			arg1_prop, arg2_prop);
+	check_any(obj, &h2o::H2O::s, s_expected, s_precision,
+			arg1_prop, arg2_prop);
+}
+
+void check_puhs(const h2o::H2O& obj,
+		double p_expected, double p_precision,
+		double u_expected, double u_precision,
+		double h_expected, double h_precision,
+		double s_expected, double s_precision,
+		property_getter arg1_prop, property_getter arg2_prop)
+{
+	check_any(obj, &h2o::H2O::p, p_expected, p_precision,
 			arg1_prop, arg2_prop);
 	check_any(obj, &h2o::H2O::u, u_expected, u_precision,
 			arg1_prop, arg2_prop);
@@ -123,6 +142,26 @@ int main(void)
 			0.263149474E+4, 1E-5,
 			0.517540298E+1, 1E-8,
 			&h2o::H2O::p, &h2o::H2O::T);
+
+	// Region 3
+	check_puhs(h2o::H2O::rhoT(500, 650),
+			0.255837018E2, 1E-7,
+			0.181226279E4, 1E-5,
+			0.186343019E4, 1E-5,
+			0.405427273E1, 1E-8,
+			&h2o::H2O::rho, &h2o::H2O::T);
+	check_puhs(h2o::H2O::rhoT(200, 650),
+			0.222930643E2, 1E-7,
+			0.226365868E4, 1E-5,
+			0.237512401E4, 1E-5,
+			0.485438792E1, 1E-8,
+			&h2o::H2O::rho, &h2o::H2O::T);
+	check_puhs(h2o::H2O::rhoT(500, 750),
+			0.783095639E2, 1E-7,
+			0.210206932E4, 1E-5,
+			0.225868845E4, 1E-5,
+			0.446971906E1, 1E-8,
+			&h2o::H2O::rho, &h2o::H2O::T);
 
 	// Region 5
 	check_vuhs(h2o::H2O(.5, 1500),

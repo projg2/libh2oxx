@@ -26,10 +26,12 @@ namespace h2o
 		static H2O Tx(double T, double x);
 		static H2O ph(double p, double h);
 		static H2O ps(double p, double s);
+		static H2O rhoT(double rho, double T);
 
 		double p() const;
 		double T() const;
 		double x() const;
+		double rho() const;
 
 		double v() const;
 		double u() const;
