@@ -63,31 +63,6 @@ H2O H2O::Tx(double T, double x)
 	return ret;
 }
 
-static double region2_T_ph(double p, double h)
-{
-	twoarg_func_t T_getter;
-
-	switch (h2o_region2_subregion_ph(p, h))
-	{
-		case H2O_REGION2_OUT_OF_RANGE:
-			T_getter = &out_of_range;
-			break;
-		case H2O_REGION2A:
-			T_getter = &h2o_region2a_T_ph;
-			break;
-		case H2O_REGION2B:
-			T_getter = &h2o_region2b_T_ph;
-			break;
-		case H2O_REGION2C:
-			T_getter = &h2o_region2c_T_ph;
-			break;
-		default:
-			T_getter = &not_supported;
-	}
-
-	return T_getter(p, h);
-}
-
 H2O H2O::ph(double p, double h)
 {
 	enum h2o_region region = h2o_region_ph(p, h);
@@ -106,7 +81,7 @@ H2O H2O::ph(double p, double h)
 			T_getter = &h2o_region1_T_ph;
 			break;
 		case H2O_REGION2:
-			T_getter = &region2_T_ph;
+			T_getter = &h2o_region2_T_ph;
 			break;
 		case H2O_REGION_OUT_OF_RANGE:
 			T_getter = &out_of_range;
@@ -123,31 +98,6 @@ H2O H2O::ph(double p, double h)
 	ret._region = region;
 
 	return ret;
-}
-
-static double region2_T_ps(double p, double s)
-{
-	twoarg_func_t T_getter;
-
-	switch (h2o_region2_subregion_ps(p, s))
-	{
-		case H2O_REGION2_OUT_OF_RANGE:
-			T_getter = &out_of_range;
-			break;
-		case H2O_REGION2A:
-			T_getter = &h2o_region2a_T_ps;
-			break;
-		case H2O_REGION2B:
-			T_getter = &h2o_region2b_T_ps;
-			break;
-		case H2O_REGION2C:
-			T_getter = &h2o_region2c_T_ps;
-			break;
-		default:
-			T_getter = &not_supported;
-	}
-
-	return T_getter(p, s);
 }
 
 H2O H2O::ps(double p, double s)
@@ -168,7 +118,7 @@ H2O H2O::ps(double p, double s)
 			T_getter = &h2o_region1_T_ps;
 			break;
 		case H2O_REGION2:
-			T_getter = &region2_T_ps;
+			T_getter = &h2o_region2_T_ps;
 			break;
 		case H2O_REGION_OUT_OF_RANGE:
 			T_getter = &out_of_range;
