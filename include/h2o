@@ -22,8 +22,8 @@ namespace h2o
 		double _arg1, _arg2;
 		Region _region;
 
-		H2O();
 	public:
+		H2O();
 		H2O(double p, double T);
 		static H2O Tx(double T, double x);
 		static H2O ph(double p, double h);

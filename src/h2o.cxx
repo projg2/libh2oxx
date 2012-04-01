@@ -40,6 +40,7 @@ static double out_of_range(double, double)
 };
 
 H2O::H2O()
+	: _region(H2O_REGION_OUT_OF_RANGE)
 {
 }
 
