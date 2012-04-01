@@ -48,8 +48,18 @@ H2O::H2O(double p, double T)
 {
 	_region = h2o_region_pT(p, T);
 
-	if (_region == H2O_REGION_OUT_OF_RANGE)
-		out_of_range(p, T);
+	switch (_region)
+	{
+		case H2O_REGION_OUT_OF_RANGE:
+			out_of_range(p, T);
+			break;
+		case H2O_REGION1:
+		case H2O_REGION2:
+		case H2O_REGION5:
+			break;
+		default:
+			not_supported(p, T);
+	}
 }
 
 H2O H2O::Tx(double T, double x)
