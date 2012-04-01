@@ -67,8 +67,16 @@ H2O H2O::Tx(double T, double x)
 {
 	H2O ret;
 
-	if (T <= 273.15 || T > 623.15)
-		out_of_range(T, x);
+	switch (h2o_region_Tx(T, x))
+	{
+		case H2O_REGION_OUT_OF_RANGE:
+			out_of_range(T, x);
+			break;
+		case H2O_REGION4:
+			break;
+		default:
+			not_supported(T, x);
+	}
 
 	ret._arg1 = T;
 	ret._arg2 = x;
