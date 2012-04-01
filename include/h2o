@@ -15,10 +15,12 @@ namespace h2o
 #		include <h2o/boundaries.h>
 	};
 
+	typedef enum internals::h2o_region Region;
+
 	class H2O
 	{
 		double _arg1, _arg2;
-		enum internals::h2o_region _region;
+		Region _region;
 
 		H2O();
 	public:
@@ -27,6 +29,8 @@ namespace h2o
 		static H2O ph(double p, double h);
 		static H2O ps(double p, double s);
 		static H2O rhoT(double rho, double T);
+
+		Region region() const;
 
 		double p() const;
 		double T() const;

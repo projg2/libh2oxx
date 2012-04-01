@@ -154,6 +154,11 @@ H2O H2O::rhoT(double rho, double T)
 		not_supported(rho, T);
 }
 
+Region H2O::region() const
+{
+	return _region;
+}
+
 double H2O::p() const
 {
 	switch (_region)
