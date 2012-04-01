@@ -67,6 +67,9 @@ H2O H2O::Tx(double T, double x)
 {
 	H2O ret;
 
+	if (T <= 273.15 || T > 623.15)
+		out_of_range(T, x);
+
 	ret._arg1 = T;
 	ret._arg2 = x;
 	ret._region = H2O_REGION4;
