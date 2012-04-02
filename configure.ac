@@ -2,7 +2,7 @@ AC_PREREQ([2.60])
 AC_INIT([libh2o++], [0])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
-AM_INIT_AUTOMAKE([1.6 foreign dist-bzip2 no-dependencies])
+AM_INIT_AUTOMAKE([1.6 foreign dist-bzip2])
 
 PKG_CHECK_MODULES([LIBH2O], [libh2o])
 
