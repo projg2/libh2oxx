@@ -20,7 +20,6 @@ namespace h2o
 #		include <h2o/region3.h>
 #		include <h2o/region4.h>
 #		include <h2o/region5.h>
-#		include <h2o/saturation.h>
 	};
 };
 
@@ -93,7 +92,7 @@ H2O H2O::ph(double p, double h)
 
 	if (region == H2O_REGION4)
 	{
-		double T = h2o_saturation_T_p(p);
+		double T = h2o_region4_T_p(p);
 		return H2O::Tx(T, h2o_region4_x_Th(T, h));
 	}
 
@@ -130,7 +129,7 @@ H2O H2O::ps(double p, double s)
 
 	if (region == H2O_REGION4)
 	{
-		double T = h2o_saturation_T_p(p);
+		double T = h2o_region4_T_p(p);
 		return H2O::Tx(T, h2o_region4_x_Ts(T, s));
 	}
 
@@ -188,7 +187,7 @@ double H2O::p() const
 		case H2O_REGION3:
 			return h2o_region3_p_rhoT(_arg1, _arg2);
 		case H2O_REGION4:
-			return h2o_saturation_p_T(_arg1);
+			return h2o_region4_p_T(_arg1);
 		default:
 			return _arg1;
 	}
