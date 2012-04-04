@@ -84,6 +84,28 @@ H2O H2O::Tx(double T, double x)
 	return ret;
 }
 
+H2O H2O::px(double p, double x)
+{
+	H2O ret;
+
+	switch (h2o_region_px(p, x))
+	{
+		case H2O_REGION_OUT_OF_RANGE:
+			out_of_range(p, x);
+			break;
+		case H2O_REGION4:
+			break;
+		default:
+			not_supported(p, x);
+	}
+
+	ret._arg1 = h2o_region4_T_p(p);
+	ret._arg2 = x;
+	ret._region = H2O_REGION4;
+
+	return ret;
+}
+
 H2O H2O::ph(double p, double h)
 {
 	enum h2o_region region = h2o_region_ph(p, h);
