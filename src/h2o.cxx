@@ -182,19 +182,18 @@ H2O H2O::ps(double p, double s)
 
 H2O H2O::rhoT(double rho, double T)
 {
-	enum h2o_region region = h2o_region_rhoT(rho, T);
+	H2O ret;
 
 	if (h2o_region_rhoT(rho, T) == H2O_REGION3)
 	{
-		H2O ret;
-
 		ret._arg1 = rho;
 		ret._arg2 = T;
 		ret._region = H2O_REGION3;
-
-		return ret;
-	} else
+	}
+	else
 		not_supported(rho, T);
+
+	return ret;
 }
 
 Region H2O::region() const
@@ -233,7 +232,7 @@ double H2O::x() const
 		case H2O_REGION4:
 			return _arg2;
 		default:
-			not_supported(0, 0);
+			return not_supported(0, 0);
 	}
 }
 
