@@ -20,8 +20,8 @@ namespace h2o
 #		include <h2o/region3.h>
 #		include <h2o/region4.h>
 #		include <h2o/region5.h>
-	};
-};
+	}
+}
 
 using namespace h2o;
 using namespace h2o::internals;
@@ -31,12 +31,12 @@ typedef double (*twoarg_func_t)(double, double);
 static double not_supported(double, double)
 {
 	throw std::runtime_error("Requested function not implemented.");
-};
+}
 
 static double out_of_range(double, double)
 {
 	throw std::range_error("Requested parameters out-of-range.");
-};
+}
 
 H2O::H2O()
 	: _region(H2O_REGION_OUT_OF_RANGE)

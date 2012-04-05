@@ -13,7 +13,7 @@ namespace h2o
 	namespace internals
 	{
 #		include <h2o/boundaries.h>
-	};
+	}
 
 	typedef enum internals::h2o_region Region;
 
@@ -43,7 +43,7 @@ namespace h2o
 		double h() const;
 		double s() const;
 	};
-};
+}
 
 #endif /*_H2O_HXX*/
 
