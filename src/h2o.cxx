@@ -205,20 +205,33 @@ double H2O::p() const
 {
 	switch (_region)
 	{
+		case H2O_REGION1:
+		case H2O_REGION2:
+		case H2O_REGION5:
+			return _arg1;
 		case H2O_REGION3:
 			return h2o_region3_p_rhoT(_arg1, _arg2);
 		case H2O_REGION4:
 			return h2o_region4_p_T(_arg1);
 		default:
-			return _arg1;
+			return not_supported(_arg1, _arg2);
 	}
 }
 
 double H2O::T() const
 {
-	if (_region == H2O_REGION4)
-		return _arg1;
-	return _arg2;
+	switch (_region)
+	{
+		case H2O_REGION1:
+		case H2O_REGION2:
+		case H2O_REGION3:
+		case H2O_REGION5:
+			return _arg2;
+		case H2O_REGION4:
+			return _arg1;
+		default:
+			return not_supported(_arg1, _arg2);
+	}
 }
 
 double H2O::x() const
@@ -228,6 +241,7 @@ double H2O::x() const
 		case H2O_REGION1:
 			return 0;
 		case H2O_REGION2:
+		case H2O_REGION5:
 			return 1;
 		case H2O_REGION4:
 			return _arg2;
