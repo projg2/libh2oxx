@@ -274,5 +274,45 @@ int main(void)
 			0.949017998E3, 1E-6,
 			&h2o::H2O::p, &h2o::H2O::s);
 
+	// Region 1, f(h, s)
+	check_any(h2o::H2O::hs(1E-3, 0.0), &h2o::H2O::p,
+			0.9800980612E-3, 1E-12,
+			&h2o::H2O::h, &h2o::H2O::s);
+	check_any(h2o::H2O::hs(90E0, 0.0), &h2o::H2O::p,
+			0.9192954727E+2, 1E-7,
+			&h2o::H2O::h, &h2o::H2O::s);
+	check_any(h2o::H2O::hs(15E2, 3.4), &h2o::H2O::p,
+			0.5868294423E+2, 1E-7,
+			&h2o::H2O::h, &h2o::H2O::s);
+
+	// Region 2, f(h, s)
+	check_any(h2o::H2O::hs(2800, 6.5), &h2o::H2O::p,
+			0.1371012767E+1, 1E-9,
+			&h2o::H2O::h, &h2o::H2O::s);
+	check_any(h2o::H2O::hs(2800, 9.5), &h2o::H2O::p,
+			0.1879743844E-2, 1E-12,
+			&h2o::H2O::h, &h2o::H2O::s);
+	check_any(h2o::H2O::hs(4100, 9.5), &h2o::H2O::p,
+			0.1024788997E+0, 1E-10,
+			&h2o::H2O::h, &h2o::H2O::s);
+	check_any(h2o::H2O::hs(2800, 6.0), &h2o::H2O::p,
+			0.4793911442E+1, 1E-9,
+			&h2o::H2O::h, &h2o::H2O::s);
+	check_any(h2o::H2O::hs(3600, 6.0), &h2o::H2O::p,
+			0.8395519209E+2, 1E-8,
+			&h2o::H2O::h, &h2o::H2O::s);
+	check_any(h2o::H2O::hs(3600, 7.0), &h2o::H2O::p,
+			0.7527161441E+1, 1E-9,
+			&h2o::H2O::h, &h2o::H2O::s);
+	check_any(h2o::H2O::hs(2800, 5.1), &h2o::H2O::p,
+			0.9439202060E+2, 1E-8,
+			&h2o::H2O::h, &h2o::H2O::s);
+	check_any(h2o::H2O::hs(2800, 5.8), &h2o::H2O::p,
+			0.8414574124E+1, 1E-9,
+			&h2o::H2O::h, &h2o::H2O::s);
+	check_any(h2o::H2O::hs(3400, 5.8), &h2o::H2O::p,
+			0.8376903879E+2, 1E-8,
+			&h2o::H2O::h, &h2o::H2O::s);
+
 	return exit_status;
 }

@@ -180,6 +180,37 @@ H2O H2O::ps(double p, double s)
 	return ret;
 }
 
+H2O H2O::hs(double h, double s)
+{
+	enum h2o_region region = h2o_region_hs(h, s);
+
+	twoarg_func_t getter;
+
+	switch (region)
+	{
+		case H2O_REGION1:
+			getter = &h2o_region1_p_hs;
+			break;
+		case H2O_REGION2:
+			getter = &h2o_region2_p_hs;
+			break;
+		case H2O_REGION4:
+			getter = &h2o_region4_T_hs;
+			break;
+		case H2O_REGION_OUT_OF_RANGE:
+			getter = &out_of_range;
+			break;
+		default:
+			getter = &not_supported;
+	}
+
+	double arg1 = getter(h, s);
+
+	if (region == H2O_REGION4)
+		return H2O::Tx(arg1, h2o_region4_x_Th(arg1, h));
+	return H2O::ph(arg1, h);
+}
+
 H2O H2O::rhoT(double rho, double T)
 {
 	H2O ret;

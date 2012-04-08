@@ -29,6 +29,7 @@ namespace h2o
 		static H2O px(double p, double x);
 		static H2O ph(double p, double h);
 		static H2O ps(double p, double s);
+		static H2O hs(double h, double s);
 		static H2O rhoT(double rho, double T);
 
 		Region region() const;
