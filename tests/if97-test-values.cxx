@@ -101,6 +101,17 @@ void check_puhs(const h2o::H2O& obj,
 			arg1_prop, arg2_prop);
 }
 
+void check_Tv(const h2o::H2O& obj,
+		double T_expected, double T_precision,
+		double v_expected, double v_precision,
+		property_getter arg1_prop, property_getter arg2_prop)
+{
+	check_any(obj, &h2o::H2O::T, T_expected, T_precision,
+			arg1_prop, arg2_prop);
+	check_any(obj, &h2o::H2O::v, v_expected, v_precision,
+			arg1_prop, arg2_prop);
+}
+
 int main(void)
 {
 	// Region 1
@@ -313,6 +324,32 @@ int main(void)
 	check_any(h2o::H2O::hs(3400, 5.8), &h2o::H2O::p,
 			0.8376903879E+2, 1E-8,
 			&h2o::H2O::h, &h2o::H2O::s);
+
+	// Region 3, f(p,h)
+	check_Tv(h2o::H2O::ph(20., 1700),
+			0.6293083892E+3, 1E-7,
+			0.1749903962E-2, 1E-12,
+			&h2o::H2O::p, &h2o::H2O::h);
+	check_Tv(h2o::H2O::ph(50., 2000),
+			0.6905718338E+3, 1E-7,
+			0.1908139035E-2, 1E-12,
+			&h2o::H2O::p, &h2o::H2O::h);
+	check_Tv(h2o::H2O::ph(100, 2100),
+			0.7336163014E+3, 1E-7,
+			0.1676229776E-2, 1E-12,
+			&h2o::H2O::p, &h2o::H2O::h);
+	check_Tv(h2o::H2O::ph(20., 2500),
+			0.6418418053E+3, 1E-7,
+			0.6670547043E-2, 1E-12,
+			&h2o::H2O::p, &h2o::H2O::h);
+	check_Tv(h2o::H2O::ph(50., 2400),
+			0.7351848618E+3, 1E-7,
+			0.2801244590E-2, 1E-12,
+			&h2o::H2O::p, &h2o::H2O::h);
+	check_Tv(h2o::H2O::ph(100, 2700),
+			0.8420460876E+3, 1E-7,
+			0.2404234998E-2, 1E-12,
+			&h2o::H2O::p, &h2o::H2O::h);
 
 	return exit_status;
 }

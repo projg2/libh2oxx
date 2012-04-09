@@ -126,6 +126,9 @@ H2O H2O::ph(double p, double h)
 		case H2O_REGION2:
 			T_getter = &h2o_region2_T_ph;
 			break;
+		case H2O_REGION3:
+			T_getter = &h2o_region3_T_ph;
+			break;
 		case H2O_REGION_OUT_OF_RANGE:
 			T_getter = &out_of_range;
 			break;
@@ -136,7 +139,11 @@ H2O H2O::ph(double p, double h)
 	double T = T_getter(p, h);
 	H2O ret;
 
-	ret._arg1 = p;
+	if (region == H2O_REGION3)
+		ret._arg1 = 1 / h2o_region3_v_ph(p, h);
+	else
+		ret._arg1 = p;
+
 	ret._arg2 = T;
 	ret._region = region;
 
@@ -163,6 +170,9 @@ H2O H2O::ps(double p, double s)
 		case H2O_REGION2:
 			T_getter = &h2o_region2_T_ps;
 			break;
+		case H2O_REGION3:
+			T_getter = &h2o_region3_T_ps;
+			break;
 		case H2O_REGION_OUT_OF_RANGE:
 			T_getter = &out_of_range;
 			break;
@@ -173,7 +183,11 @@ H2O H2O::ps(double p, double s)
 	double T = T_getter(p, s);
 	H2O ret;
 
-	ret._arg1 = p;
+	if (region == H2O_REGION3)
+		ret._arg1 = 1 / h2o_region3_v_ps(p, s);
+	else
+		ret._arg1 = p;
+
 	ret._arg2 = T;
 	ret._region = region;
 
