@@ -208,6 +208,9 @@ H2O H2O::hs(double h, double s)
 		case H2O_REGION2:
 			getter = &h2o_region2_p_hs;
 			break;
+		case H2O_REGION3:
+			getter = &h2o_region3_p_hs;
+			break;
 		case H2O_REGION4:
 			getter = &h2o_region4_T_hs;
 			break;
@@ -222,7 +225,7 @@ H2O H2O::hs(double h, double s)
 
 	if (region == H2O_REGION4)
 		return H2O::Tx(arg1, h2o_region4_x_Th(arg1, h));
-	return H2O::ph(arg1, h);
+	return H2O::ps(arg1, s);
 }
 
 H2O H2O::rhoT(double rho, double T)

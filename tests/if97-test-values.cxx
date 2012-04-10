@@ -377,5 +377,26 @@ int main(void)
 			0.2449610757E-2, 1E-12,
 			&h2o::H2O::p, &h2o::H2O::s);
 
+	// Region 3, f(h, s)
+	// (h,s)->(p,s)->(v,T)->p -- we've got to lose precision
+	check_any(h2o::H2O::hs(1700, 3.8), &h2o::H2O::p,
+			0.2555703246E+2, 1E-2,
+			&h2o::H2O::h, &h2o::H2O::s);
+	check_any(h2o::H2O::hs(2000, 4.2), &h2o::H2O::p,
+			0.4540873468E+2, 5E-3,
+			&h2o::H2O::h, &h2o::H2O::s);
+	check_any(h2o::H2O::hs(2100, 4.3), &h2o::H2O::p,
+			0.6078123340E+2, 5E-2,
+			&h2o::H2O::h, &h2o::H2O::s);
+	check_any(h2o::H2O::hs(2600, 5.1), &h2o::H2O::p,
+			0.3434999263E+2, 1E-3,
+			&h2o::H2O::h, &h2o::H2O::s);
+	check_any(h2o::H2O::hs(2400, 4.7), &h2o::H2O::p,
+			0.6363924887E+2, 5E-3,
+			&h2o::H2O::h, &h2o::H2O::s);
+	check_any(h2o::H2O::hs(2700, 5.0), &h2o::H2O::p,
+			0.8839043281E+2, 1E-3,
+			&h2o::H2O::h, &h2o::H2O::s);
+
 	return exit_status;
 }
