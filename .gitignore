@@ -2,9 +2,9 @@
 *.lo
 *.o
 *.pc
-/*-test
-/.deps/
-/.libs/
+.deps
+.dirstamp
+.libs
 /Makefile
 /Makefile.in
 /aclocal.m4
@@ -19,3 +19,4 @@
 /libtool
 /m4/
 /stamp-h1
+/if97-test-values
