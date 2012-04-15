@@ -8,7 +8,7 @@ lib_LTLIBRARIES = libh2oxx.la
 libh2oxx_la_SOURCES = src/h2o.cxx
 libh2oxx_la_CPPFLAGS = $(LIBH2O_CFLAGS) -I$(top_srcdir)/include
 libh2oxx_la_LIBADD = $(LIBH2O_LIBS)
-libh2oxx_la_LDFLAGS = -version-info 0:0:0
+libh2oxx_la_LDFLAGS = -version-info 0:0:0 -no-undefined
 
 h2oxx_HEADERS = include/h2o
 
