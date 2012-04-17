@@ -57,6 +57,12 @@ H2O::H2O(double p, double T)
 		case H2O_REGION2:
 		case H2O_REGION5:
 			break;
+		case H2O_REGION3: // -> (rho,T)
+		{
+			double v = h2o_region3_v_pT(p, T);
+			_arg1 = 1/v;
+			break;
+		}
 		default:
 			not_supported(p, T);
 	}
