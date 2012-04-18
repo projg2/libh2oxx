@@ -102,15 +102,6 @@ const char* name2_by_constr(obj_constr constr)
 	throw std::runtime_error("Unknown property to name_by_prop()");
 }
 
-void check_any(const h2o::H2O& obj, property_getter prop,
-		double expected, double precision,
-		property_getter arg1_prop, property_getter arg2_prop)
-{
-	check((obj.*prop)(), expected, precision, name_by_prop(prop),
-			name_by_prop(arg1_prop), (obj.*arg1_prop)(),
-			name_by_prop(arg2_prop), (obj.*arg2_prop)());
-}
-
 void check_any(obj_constr constr, double arg1, double arg2,
 		property_getter prop, double expected, double precision)
 {
@@ -119,132 +110,115 @@ void check_any(obj_constr constr, double arg1, double arg2,
 			name2_by_constr(constr), arg2);
 }
 
-void check_vuhs(const h2o::H2O& obj,
+void check_vuhs(double p, double T,
 		double v_expected, double v_precision,
 		double u_expected, double u_precision,
 		double h_expected, double h_precision,
-		double s_expected, double s_precision,
-		property_getter arg1_prop, property_getter arg2_prop)
+		double s_expected, double s_precision)
 {
-	check_any(obj, &h2o::H2O::v, v_expected, v_precision,
-			arg1_prop, arg2_prop);
-	check_any(obj, &h2o::H2O::u, u_expected, u_precision,
-			arg1_prop, arg2_prop);
-	check_any(obj, &h2o::H2O::h, h_expected, h_precision,
-			arg1_prop, arg2_prop);
-	check_any(obj, &h2o::H2O::s, s_expected, s_precision,
-			arg1_prop, arg2_prop);
+	check_any(&h2o::H2O::pT, p, T, &h2o::H2O::v,
+			v_expected, v_precision);
+	check_any(&h2o::H2O::pT, p, T, &h2o::H2O::u,
+			u_expected, u_precision);
+	check_any(&h2o::H2O::pT, p, T, &h2o::H2O::h,
+			h_expected, h_precision);
+	check_any(&h2o::H2O::pT, p, T, &h2o::H2O::s,
+			s_expected, s_precision);
 }
 
-void check_puhs(const h2o::H2O& obj,
+void check_puhs(double rho, double T,
 		double p_expected, double p_precision,
 		double u_expected, double u_precision,
 		double h_expected, double h_precision,
-		double s_expected, double s_precision,
-		property_getter arg1_prop, property_getter arg2_prop)
+		double s_expected, double s_precision)
 {
-	check_any(obj, &h2o::H2O::p, p_expected, p_precision,
-			arg1_prop, arg2_prop);
-	check_any(obj, &h2o::H2O::u, u_expected, u_precision,
-			arg1_prop, arg2_prop);
-	check_any(obj, &h2o::H2O::h, h_expected, h_precision,
-			arg1_prop, arg2_prop);
-	check_any(obj, &h2o::H2O::s, s_expected, s_precision,
-			arg1_prop, arg2_prop);
+	check_any(&h2o::H2O::rhoT, rho, T, &h2o::H2O::p,
+			p_expected, p_precision);
+	check_any(&h2o::H2O::rhoT, rho, T, &h2o::H2O::u,
+			u_expected, u_precision);
+	check_any(&h2o::H2O::rhoT, rho, T, &h2o::H2O::h,
+			h_expected, h_precision);
+	check_any(&h2o::H2O::rhoT, rho, T, &h2o::H2O::s,
+			s_expected, s_precision);
 }
 
-void check_Tv(const h2o::H2O& obj,
+void check_Tv(obj_constr constr, double arg1, double arg2,
 		double T_expected, double T_precision,
-		double v_expected, double v_precision,
-		property_getter arg1_prop, property_getter arg2_prop)
+		double v_expected, double v_precision)
 {
-	check_any(obj, &h2o::H2O::T, T_expected, T_precision,
-			arg1_prop, arg2_prop);
-	check_any(obj, &h2o::H2O::v, v_expected, v_precision,
-			arg1_prop, arg2_prop);
+	check_any(constr, arg1, arg2, &h2o::H2O::T, T_expected, T_precision);
+	check_any(constr, arg1, arg2, &h2o::H2O::v, v_expected, v_precision);
 }
 
 int main(void)
 {
 	// Region 1
-	check_vuhs(h2o::H2O(3., 300),
+	check_vuhs(3., 300,
 			0.100215168E-2, 1E-11,
 			0.112324818E+3, 1E-6,
 			0.115331273E+3, 1E-6,
-			0.392294792E+0, 1E-9,
-			&h2o::H2O::p, &h2o::H2O::T);
-	check_vuhs(h2o::H2O(80, 300),
+			0.392294792E+0, 1E-9);
+	check_vuhs(80, 300,
 			0.971180894E-3, 1E-12,
 			0.106448356E+3, 1E-6,
 			0.184142828E+3, 1E-6,
-			0.368563852E+0, 1E-9,
-			&h2o::H2O::p, &h2o::H2O::T);
-	check_vuhs(h2o::H2O(3., 500),
+			0.368563852E+0, 1E-9);
+	check_vuhs(3., 500,
 			0.120241800E-2, 1E-11,
 			0.971934985E+3, 1E-6,
 			0.975542239E+3, 1E-6,
-			0.258041912E+1, 1E-8,
-			&h2o::H2O::p, &h2o::H2O::T);
+			0.258041912E+1, 1E-8);
 
 	// Region 2
-	check_vuhs(h2o::H2O(35E-4, 300),
+	check_vuhs(35E-4, 300,
 			0.394913866E+2, 1E-7,
 			0.241169160E+4, 1E-5,
 			0.254991145E+4, 1E-5,
-			0.852238967E+1, 1E-8,
-			&h2o::H2O::p, &h2o::H2O::T);
-	check_vuhs(h2o::H2O(35E-4, 700),
+			0.852238967E+1, 1E-8);
+	check_vuhs(35E-4, 700,
 			0.923015898E+2, 1E-7,
 			0.301262819E+4, 1E-5,
 			0.333568375E+4, 1E-5,
-			0.101749996E+2, 1E-7,
-			&h2o::H2O::p, &h2o::H2O::T);
-	check_vuhs(h2o::H2O(30E+0, 700),
+			0.101749996E+2, 1E-7);
+	check_vuhs(30E+0, 700,
 			0.542946619E-2, 1E-11,
 			0.246861076E+4, 1E-5,
 			0.263149474E+4, 1E-5,
-			0.517540298E+1, 1E-8,
-			&h2o::H2O::p, &h2o::H2O::T);
+			0.517540298E+1, 1E-8);
 
 	// Region 3
-	check_puhs(h2o::H2O::rhoT(500, 650),
+	check_puhs(500, 650,
 			0.255837018E2, 1E-7,
 			0.181226279E4, 1E-5,
 			0.186343019E4, 1E-5,
-			0.405427273E1, 1E-8,
-			&h2o::H2O::rho, &h2o::H2O::T);
-	check_puhs(h2o::H2O::rhoT(200, 650),
+			0.405427273E1, 1E-8);
+	check_puhs(200, 650,
 			0.222930643E2, 1E-7,
 			0.226365868E4, 1E-5,
 			0.237512401E4, 1E-5,
-			0.485438792E1, 1E-8,
-			&h2o::H2O::rho, &h2o::H2O::T);
-	check_puhs(h2o::H2O::rhoT(500, 750),
+			0.485438792E1, 1E-8);
+	check_puhs(500, 750,
 			0.783095639E2, 1E-7,
 			0.210206932E4, 1E-5,
 			0.225868845E4, 1E-5,
-			0.446971906E1, 1E-8,
-			&h2o::H2O::rho, &h2o::H2O::T);
+			0.446971906E1, 1E-8);
 
 	// Region 5
-	check_vuhs(h2o::H2O(.5, 1500),
+	check_vuhs(.5, 1500,
 			0.138455090E+1, 1E-8,
 			0.452749310E+4, 1E-5,
 			0.521976855E+4, 1E-5,
-			0.965408875E+1, 1E-8,
-			&h2o::H2O::p, &h2o::H2O::T);
-	check_vuhs(h2o::H2O(30, 1500),
+			0.965408875E+1, 1E-8);
+	check_vuhs(30, 1500,
 			0.230761299E-1, 1E-10,
 			0.447495124E+4, 1E-5,
 			0.516723514E+4, 1E-5,
-			0.772970133E+1, 1E-8,
-			&h2o::H2O::p, &h2o::H2O::T);
-	check_vuhs(h2o::H2O(30, 2000),
+			0.772970133E+1, 1E-8);
+	check_vuhs(30, 2000,
 			0.311385219E-1, 1E-10,
 			0.563707038E+4, 1E-5,
 			0.657122604E+4, 1E-5,
-			0.853640523E+1, 1E-8,
-			&h2o::H2O::p, &h2o::H2O::T);
+			0.853640523E+1, 1E-8);
 
 	// saturation line
 	check_any(h2o::H2O::Tx, 300, 1, &h2o::H2O::p,
@@ -339,56 +313,44 @@ int main(void)
 			0.8376903879E+2, 1E-8);
 
 	// Region 3, f(p, h)
-	check_Tv(h2o::H2O::ph(20., 1700),
+	check_Tv(h2o::H2O::ph, 20., 1700,
 			0.6293083892E+3, 1E-7,
-			0.1749903962E-2, 1E-12,
-			&h2o::H2O::p, &h2o::H2O::h);
-	check_Tv(h2o::H2O::ph(50., 2000),
+			0.1749903962E-2, 1E-12);
+	check_Tv(h2o::H2O::ph, 50., 2000,
 			0.6905718338E+3, 1E-7,
-			0.1908139035E-2, 1E-12,
-			&h2o::H2O::p, &h2o::H2O::h);
-	check_Tv(h2o::H2O::ph(100, 2100),
+			0.1908139035E-2, 1E-12);
+	check_Tv(h2o::H2O::ph, 100, 2100,
 			0.7336163014E+3, 1E-7,
-			0.1676229776E-2, 1E-12,
-			&h2o::H2O::p, &h2o::H2O::h);
-	check_Tv(h2o::H2O::ph(20., 2500),
+			0.1676229776E-2, 1E-12);
+	check_Tv(h2o::H2O::ph, 20., 2500,
 			0.6418418053E+3, 1E-7,
-			0.6670547043E-2, 1E-12,
-			&h2o::H2O::p, &h2o::H2O::h);
-	check_Tv(h2o::H2O::ph(50., 2400),
+			0.6670547043E-2, 1E-12);
+	check_Tv(h2o::H2O::ph, 50., 2400,
 			0.7351848618E+3, 1E-7,
-			0.2801244590E-2, 1E-12,
-			&h2o::H2O::p, &h2o::H2O::h);
-	check_Tv(h2o::H2O::ph(100, 2700),
+			0.2801244590E-2, 1E-12);
+	check_Tv(h2o::H2O::ph, 100, 2700,
 			0.8420460876E+3, 1E-7,
-			0.2404234998E-2, 1E-12,
-			&h2o::H2O::p, &h2o::H2O::h);
+			0.2404234998E-2, 1E-12);
 
 	// Region 3, f(p, s)
-	check_Tv(h2o::H2O::ps(20., 3.8),
+	check_Tv(h2o::H2O::ps, 20., 3.8,
 			0.6282959869E+3, 1E-7,
-			0.1733791463E-2, 1E-12,
-			&h2o::H2O::p, &h2o::H2O::s);
-	check_Tv(h2o::H2O::ps(50., 3.6),
+			0.1733791463E-2, 1E-12);
+	check_Tv(h2o::H2O::ps, 50., 3.6,
 			0.6297158726E+3, 1E-7,
-			0.1469680170E-2, 1E-12,
-			&h2o::H2O::p, &h2o::H2O::s);
-	check_Tv(h2o::H2O::ps(100, 4.0),
+			0.1469680170E-2, 1E-12);
+	check_Tv(h2o::H2O::ps, 100, 4.0,
 			0.7056880237E+3, 1E-7,
-			0.1555893131E-2, 1E-12,
-			&h2o::H2O::p, &h2o::H2O::s);
-	check_Tv(h2o::H2O::ps(20., 5.0),
+			0.1555893131E-2, 1E-12);
+	check_Tv(h2o::H2O::ps, 20., 5.0,
 			0.6401176443E+3, 1E-7,
-			0.6262101987E-2, 1E-12,
-			&h2o::H2O::p, &h2o::H2O::s);
-	check_Tv(h2o::H2O::ps(50., 4.5),
+			0.6262101987E-2, 1E-12);
+	check_Tv(h2o::H2O::ps, 50., 4.5,
 			0.7163687517E+3, 1E-7,
-			0.2332634294E-2, 1E-12,
-			&h2o::H2O::p, &h2o::H2O::s);
-	check_Tv(h2o::H2O::ps(100, 5.0),
+			0.2332634294E-2, 1E-12);
+	check_Tv(h2o::H2O::ps, 100, 5.0,
 			0.8474332825E+3, 1E-7,
-			0.2449610757E-2, 1E-12,
-			&h2o::H2O::p, &h2o::H2O::s);
+			0.2449610757E-2, 1E-12);
 
 	// Region 3, f(h, s)
 	// (h,s)->(p,s)->(v,T)->p -- we've got to lose precision
