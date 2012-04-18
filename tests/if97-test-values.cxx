@@ -9,8 +9,10 @@
 
 #include "h2o"
 
+#include <iostream>
+#include <iomanip>
+
 #include <cmath>
-#include <cstdio>
 #include <stdexcept>
 
 int tests_done = 0;
@@ -24,15 +26,22 @@ void check(double result, double expected, double precision, const char* call,
 
 	if (difference >= precision)
 	{
-		std::fprintf(stderr, "[FAIL] %s(%s=%.3e, %s=%.3e) = %.9e, while %.9e expected.\n",
-				call, arg1, arg1_val, arg2, arg2_val,
-				result, expected);
+		std::cerr << "[FAIL] " << call << "(" << std::setprecision(3)
+			<< arg1 << "=" << std::setw(6) << arg1_val << ", "
+			<< arg2 << "=" << std::setw(6) << arg2_val << ") = "
+			<< std::setw(14) << std::setprecision(9) << result
+			<< ", while "
+			<< std::setw(14) << std::setprecision(9) << expected
+			<< " expected." << std::endl;
+
 		++tests_failed;
 	}
 	else
-		std::fprintf(stderr, "[ OK ] %s(%s=%.3e, %s=%.3e) = %.9e.\n",
-				call, arg1, arg1_val, arg2, arg2_val,
-				result);
+		std::cerr << "[ OK ] " << call << "("
+			<< arg1 << "=" << std::setw(6) << arg1_val << ", "
+			<< arg2 << "=" << std::setw(6) << arg2_val << ") = "
+			<< std::setw(14) << std::setprecision(9) << result
+			<< "." << std::endl;
 
 	++tests_done;
 }
@@ -474,9 +483,11 @@ int main(void)
 			0.3701940010E-2, 1E-12);
 
 	if (tests_failed == 0)
-		std::fprintf(stderr, "%d tests done. All tests suceeded.\n", tests_done);
+		std::cerr << tests_done << " tests done. All tests suceeded."
+			<< std::endl;
 	else
-		std::fprintf(stderr, "%d of %d tests failed.\n", tests_failed, tests_done);
+		std::cerr << tests_failed << " of " << tests_done
+			<< " tests failed." << std::endl;
 
 	return tests_failed ? 1 : 0;
 }
