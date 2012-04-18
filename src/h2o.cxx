@@ -68,6 +68,13 @@ H2O::H2O(double p, double T)
 	}
 }
 
+H2O H2O::pT(double p, double T)
+{
+	H2O ret(p, T);
+
+	return ret;
+}
+
 H2O H2O::Tx(double T, double x)
 {
 	H2O ret;
