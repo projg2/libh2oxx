@@ -13,7 +13,8 @@
 #include <cstdio>
 #include <stdexcept>
 
-int exit_status;
+int tests_done = 0;
+int tests_failed = 0;
 
 void check(double result, double expected, double precision, const char* call,
 		const char* arg1, double arg1_val,
@@ -26,12 +27,14 @@ void check(double result, double expected, double precision, const char* call,
 		std::fprintf(stderr, "[FAIL] %s(%s=%.3e, %s=%.3e) = %.9e, while %.9e expected.\n",
 				call, arg1, arg1_val, arg2, arg2_val,
 				result, expected);
-		exit_status++;
+		++tests_failed;
 	}
 	else
 		std::fprintf(stderr, "[ OK ] %s(%s=%.3e, %s=%.3e) = %.9e.\n",
 				call, arg1, arg1_val, arg2, arg2_val,
 				result);
+
+	++tests_done;
 }
 
 typedef double (h2o::H2O::*property_getter)() const;
@@ -556,5 +559,10 @@ int main(void)
 			0.3701940010E-2, 1E-12,
 			&h2o::H2O::p, &h2o::H2O::T);
 
-	return exit_status;
+	if (tests_failed == 0)
+		std::fprintf(stderr, "%d tests done. All tests suceeded.\n", tests_done);
+	else
+		std::fprintf(stderr, "%d of %d tests failed.\n", tests_failed, tests_done);
+
+	return tests_failed ? 1 : 0;
 }
