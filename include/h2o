@@ -44,6 +44,9 @@ namespace h2o
 		double u() const;
 		double h() const;
 		double s() const;
+
+		H2O expand(double pout) const;
+		H2O expand(double pout, double eta) const;
 	};
 }
 

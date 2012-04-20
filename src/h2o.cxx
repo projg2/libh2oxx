@@ -434,3 +434,31 @@ double H2O::s() const
 
 	return func(_arg1, _arg2);
 }
+
+H2O H2O::expand(double pout) const
+{
+	switch (_region)
+	{
+		case H2O_REGION2:
+		case H2O_REGION3:
+		case H2O_REGION4:
+			break;
+		case H2O_REGION1: // unable to expand water
+		case H2O_REGION5: // lack of f(p,s)
+		default:
+			not_supported(pout, pout);
+	}
+
+	return H2O::ps(pout, s());
+}
+
+H2O H2O::expand(double pout, double eta) const
+{
+	H2O ideal = expand(pout);
+
+	double hin = h();
+	double hout = ideal.h();
+	double houtr = hin - (hin - hout) * eta;
+
+	return H2O::ph(pout, houtr);
+}
