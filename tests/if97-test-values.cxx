@@ -178,6 +178,17 @@ public:
 		check_any(constr, arg1, arg2, &h2o::H2O::T, T_expected, T_precision);
 		check_any(constr, arg1, arg2, &h2o::H2O::v, v_expected, v_precision);
 	}
+
+	void check_expand(double pin, double pout,
+			double s, double s_precision,
+			double T_expected, double T_precision)
+	{
+		h2o::H2O expanded = h2o::H2O::ps(pin, s).expand(pout);
+		check(expanded.s(), s, s_precision,
+				"s<-expand", " pin", pin, "s", s);
+		check(expanded.T(), T_expected, T_precision,
+				"T<-expand", "pout", pout, "s", s);
+	}
 };
 
 int main(void)
@@ -504,6 +515,11 @@ int main(void)
 			0.3798732962E-2, 1E-12);
 	t.check_any(h2o::H2O::pT, 22.064, 647.15, &h2o::H2O::v,
 			0.3701940010E-2, 1E-12);
+
+	// test .expand()
+	t.check_expand(2.5, 0.1, 8.00, 1E-5, 0.514127081E3, 1E-2);
+	t.check_expand(8.0, 0.1, 7.50, 1E-4, 0.399517097E3, 1E-3);
+	t.check_expand(80., 20., 5.75, 1E-2, 0.697992849E3, 1E-3);
 
 	return t.finish();
 }
