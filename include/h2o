@@ -15,7 +15,28 @@ namespace h2o
 #		include <h2o/boundaries.h>
 	}
 
-	typedef enum internals::h2o_region Region;
+	class Region
+	{
+	public:
+		typedef enum
+		{
+			OOR,
+			R1,
+			R2,
+			R3,
+			R4,
+			R5
+		} enum_type;
+
+	private:
+		enum_type _val;
+
+	public:
+		Region(enum_type val = OOR);
+		Region(enum internals::h2o_region val);
+
+		operator enum_type() const;
+	};
 
 	class H2O
 	{

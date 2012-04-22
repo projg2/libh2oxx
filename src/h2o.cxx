@@ -39,7 +39,7 @@ static double out_of_range(double, double)
 }
 
 H2O::H2O()
-	: _region(H2O_REGION_OUT_OF_RANGE)
+	: _region(Region::OOR)
 {
 }
 
@@ -50,14 +50,14 @@ H2O::H2O(double p, double T)
 
 	switch (_region)
 	{
-		case H2O_REGION_OUT_OF_RANGE:
+		case Region::OOR:
 			out_of_range(p, T);
 			break;
-		case H2O_REGION1:
-		case H2O_REGION2:
-		case H2O_REGION5:
+		case Region::R1:
+		case Region::R2:
+		case Region::R5:
 			break;
-		case H2O_REGION3: // -> (rho,T)
+		case Region::R3: // -> (rho,T)
 		{
 			double v = h2o_region3_v_pT(p, T);
 			_arg1 = 1/v;
@@ -92,7 +92,7 @@ H2O H2O::Tx(double T, double x)
 
 	ret._arg1 = T;
 	ret._arg2 = x;
-	ret._region = H2O_REGION4;
+	ret._region = Region::R4;
 
 	return ret;
 }
@@ -114,7 +114,7 @@ H2O H2O::px(double p, double x)
 
 	ret._arg1 = h2o_region4_T_p(p);
 	ret._arg2 = x;
-	ret._region = H2O_REGION4;
+	ret._region = Region::R4;
 
 	return ret;
 }
@@ -266,13 +266,13 @@ double H2O::p() const
 {
 	switch (_region)
 	{
-		case H2O_REGION1:
-		case H2O_REGION2:
-		case H2O_REGION5:
+		case Region::R1:
+		case Region::R2:
+		case Region::R5:
 			return _arg1;
-		case H2O_REGION3:
+		case Region::R3:
 			return h2o_region3_p_rhoT(_arg1, _arg2);
-		case H2O_REGION4:
+		case Region::R4:
 			return h2o_region4_p_T(_arg1);
 		default:
 			return not_supported(_arg1, _arg2);
@@ -283,12 +283,12 @@ double H2O::T() const
 {
 	switch (_region)
 	{
-		case H2O_REGION1:
-		case H2O_REGION2:
-		case H2O_REGION3:
-		case H2O_REGION5:
+		case Region::R1:
+		case Region::R2:
+		case Region::R3:
+		case Region::R5:
 			return _arg2;
-		case H2O_REGION4:
+		case Region::R4:
 			return _arg1;
 		default:
 			return not_supported(_arg1, _arg2);
@@ -299,12 +299,12 @@ double H2O::x() const
 {
 	switch (_region)
 	{
-		case H2O_REGION1:
+		case Region::R1:
 			return 0;
-		case H2O_REGION2:
-		case H2O_REGION5:
+		case Region::R2:
+		case Region::R5:
 			return 1;
-		case H2O_REGION4:
+		case Region::R4:
 			return _arg2;
 		default:
 			return not_supported(0, 0);
@@ -313,7 +313,7 @@ double H2O::x() const
 
 double H2O::rho() const
 {
-	if (_region == H2O_REGION3)
+	if (_region == Region::R3)
 		return _arg1;
 	return 1/v();
 }
@@ -329,19 +329,19 @@ double H2O::v() const
 
 	switch (_region)
 	{
-		case H2O_REGION1:
+		case Region::R1:
 			func = &h2o_region1_v_pT;
 			break;
-		case H2O_REGION2:
+		case Region::R2:
 			func = &h2o_region2_v_pT;
 			break;
-		case H2O_REGION3:
+		case Region::R3:
 			func = &region3_v_rhoT;
 			break;
-		case H2O_REGION4:
+		case Region::R4:
 			func = &h2o_region4_v_Tx;
 			break;
-		case H2O_REGION5:
+		case Region::R5:
 			func = &h2o_region5_v_pT;
 			break;
 		default:
@@ -357,19 +357,19 @@ double H2O::u() const
 
 	switch (_region)
 	{
-		case H2O_REGION1:
+		case Region::R1:
 			func = &h2o_region1_u_pT;
 			break;
-		case H2O_REGION2:
+		case Region::R2:
 			func = &h2o_region2_u_pT;
 			break;
-		case H2O_REGION3:
+		case Region::R3:
 			func = &h2o_region3_u_rhoT;
 			break;
-		case H2O_REGION4:
+		case Region::R4:
 			func = &h2o_region4_u_Tx;
 			break;
-		case H2O_REGION5:
+		case Region::R5:
 			func = &h2o_region5_u_pT;
 			break;
 		default:
@@ -385,19 +385,19 @@ double H2O::h() const
 
 	switch (_region)
 	{
-		case H2O_REGION1:
+		case Region::R1:
 			func = &h2o_region1_h_pT;
 			break;
-		case H2O_REGION2:
+		case Region::R2:
 			func = &h2o_region2_h_pT;
 			break;
-		case H2O_REGION3:
+		case Region::R3:
 			func = &h2o_region3_h_rhoT;
 			break;
-		case H2O_REGION4:
+		case Region::R4:
 			func = &h2o_region4_h_Tx;
 			break;
-		case H2O_REGION5:
+		case Region::R5:
 			func = &h2o_region5_h_pT;
 			break;
 		default:
@@ -413,19 +413,19 @@ double H2O::s() const
 
 	switch (_region)
 	{
-		case H2O_REGION1:
+		case Region::R1:
 			func = &h2o_region1_s_pT;
 			break;
-		case H2O_REGION2:
+		case Region::R2:
 			func = &h2o_region2_s_pT;
 			break;
-		case H2O_REGION3:
+		case Region::R3:
 			func = &h2o_region3_s_rhoT;
 			break;
-		case H2O_REGION4:
+		case Region::R4:
 			func = &h2o_region4_s_Tx;
 			break;
-		case H2O_REGION5:
+		case Region::R5:
 			func = &h2o_region5_s_pT;
 			break;
 		default:
@@ -439,12 +439,12 @@ H2O H2O::expand(double pout) const
 {
 	switch (_region)
 	{
-		case H2O_REGION2:
-		case H2O_REGION3:
-		case H2O_REGION4:
+		case Region::R2:
+		case Region::R3:
+		case Region::R4:
 			break;
-		case H2O_REGION1: // unable to expand water
-		case H2O_REGION5: // lack of f(p,s)
+		case Region::R1: // unable to expand water
+		case Region::R5: // lack of f(p,s)
 		default:
 			not_supported(pout, pout);
 	}
