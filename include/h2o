@@ -13,6 +13,7 @@ namespace h2o
 	namespace internals
 	{
 #		include <h2o/boundaries.h>
+#		include <h2o/h2o.h>
 	}
 
 	class Region
@@ -40,8 +41,9 @@ namespace h2o
 
 	class H2O
 	{
-		double _arg1, _arg2;
-		Region _region;
+		internals::h2o_t _data;
+
+		H2O(internals::h2o_t data);
 
 	public:
 		H2O();
