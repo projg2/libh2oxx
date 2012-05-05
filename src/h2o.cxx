@@ -117,6 +117,8 @@ double H2O::x() const
 {
 	if (_data.region == H2O_REGION_OUT_OF_RANGE)
 		uninitialized();
+	if (_data.region == H2O_REGION3)
+		throw std::runtime_error("x undefined in Region 3.");
 
 	return h2o_get_x(_data);
 }
