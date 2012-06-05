@@ -92,6 +92,11 @@ H2O H2O::rhoT(double rho, double T)
 	return H2O(internals::h2o_new_rhoT(rho, T));
 }
 
+bool H2O::initialized() const
+{
+	return _data.region != H2O_REGION_OUT_OF_RANGE;
+}
+
 Region H2O::region() const
 {
 	return _data.region;

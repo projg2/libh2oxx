@@ -113,6 +113,13 @@ namespace h2o
 		static H2O rhoT(double rho, double T);
 
 		/**
+		 * Check whether the class is initialized.
+		 *
+		 * Returns true if it is, false otherwise.
+		 */
+		bool initialized() const;
+
+		/**
 		 * Get the region associated with the current state point.
 		 *
 		 * This can return Region::R1 through Region::R5 or Region::OOR
