@@ -20,3 +20,9 @@ check_PROGRAMS = $(TESTS)
 tests_if97_test_values_SOURCES = tests/if97-test-values.cxx
 tests_if97_test_values_CPPFLAGS = $(LIBH2O_CFLAGS) -I$(top_srcdir)/include
 tests_if97_test_values_LDADD = libh2oxx.la
+
+EXTRA_DIST = NEWS
+NEWS: configure.ac Makefile.am
+	git for-each-ref refs/tags --sort '-*committerdate' \
+		--format '# %(tag) (%(*committerdate:short))%0a%(contents:body)' \
+		> NEWS
