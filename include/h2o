@@ -16,9 +16,16 @@ namespace h2o
 #		include <h2o/h2o.h>
 	}
 
+	/**
+	 * A wrapper class for Region enumeration.
+	 */
 	class Region
 	{
 	public:
+		/** Valid values are Region::R1 through Region::R5. There is
+		 * also Region::OOR which means out-of-range, and usually is
+		 * used as a 'null' value.
+		 */
 		typedef enum
 		{
 			OOR,
@@ -33,12 +40,45 @@ namespace h2o
 		enum_type _val;
 
 	public:
+		/**
+		 * Constructors.
+		 *
+		 * h2o::Region can be either instantiated using one
+		 * of the enumerated values declared here, or `enum h2o_region`
+		 * from libh2o.
+		 *
+		 * When no specific value is provided, the type defaults to
+		 * Region::OOR. When an invalid value is provided, the program
+		 * is killed via assert().
+		 */
 		Region(enum_type val = OOR);
 		Region(enum internals::h2o_region val);
 
+		/**
+		 * Implicit conversion to enum_type. This allows the class to be
+		 * used in switch.
+		 */
 		operator enum_type() const;
 	};
 
+	/**
+	 * Property cheat sheet:
+	 *
+	 * p - pressure [MPa],
+	 * T - temperature [K],
+	 * u - specific internal energy [kJ/kg],
+	 * h - specific enthalpy [kJ/kg],
+	 * s - specific enthropy [kJ/kgK],
+	 * v - specific volume [m³/kg],
+	 * rho - density [kg/m³],
+	 * x - dryness [0..1].
+	 */
+
+	/**
+	 * A class representing H2O state point.
+	 *
+	 * It is basically a C++ wrapper to libh2o h2o_t.
+	 */
 	class H2O
 	{
 		internals::h2o_t _data;
@@ -46,6 +86,22 @@ namespace h2o
 		H2O(internals::h2o_t data);
 
 	public:
+		/**
+		 * Constructors.
+		 *
+		 * The default constructor takes either a (p,T) pair,
+		 * or no arguments at all. In the latter case, the class is left
+		 * 'uninitialized', and no getters must be used on it.
+		 *
+		 * There is also a set of static named constructors accepting
+		 * other argument pairs. Types obtained through these
+		 * constructors can be assigned (copied) to both uninitialized
+		 * and initialized H2O classes.
+		 *
+		 * If the passed arguments are out of range, the constructor
+		 * will throw a std::range_error (from <stdexcept>).
+		 */
+
 		H2O();
 		H2O(double p, double T);
 		static H2O pT(double p, double T);
@@ -56,8 +112,28 @@ namespace h2o
 		static H2O hs(double h, double s);
 		static H2O rhoT(double rho, double T);
 
+		/**
+		 * Get the region associated with the current state point.
+		 *
+		 * This can return Region::R1 through Region::R5 or Region::OOR
+		 * if the class is uninitialized.
+		 */
 		Region region() const;
 
+		/**
+		 * Getters.
+		 *
+		 * Get the value of a particular property. The class must be
+		 * initialized first.
+		 *
+		 * Note: it is unallowed to get x() on a Region 3 state point.
+		 * If you'd like to use x() getter, you have to check the region
+		 * first.
+		 *
+		 * Another note: right now, most of invalid uses result in
+		 * std::runtime_error. This is not part of the API, and must not
+		 * be relied upon. Soon the code will use assert() instead.
+		 */
 		double p() const;
 		double T() const;
 		double x() const;
@@ -68,6 +144,19 @@ namespace h2o
 		double h() const;
 		double s() const;
 
+		/**
+		 * Perform an expansion calculation from the current state
+		 * point.
+		 *
+		 * @pout: target pressure [MPa]
+		 * @eta: (optional) isenthropic efficiency [0..1]
+		 *
+		 * Returns a new state point or throws a std::range_error
+		 * if either the pre- or post-expansion parameters are
+		 * out of supported range.
+		 *
+		 * If no effiency is provided, 1.0 (ideal expansion) is assumed.
+		 */
 		H2O expand(double pout) const;
 		H2O expand(double pout, double eta) const;
 	};
@@ -75,4 +164,4 @@ namespace h2o
 
 #endif /*_H2O_HXX*/
 
-// vim:syn=cpp
+// vim:ft=cpp
