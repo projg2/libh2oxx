@@ -166,7 +166,7 @@ double H2O::s() const
 H2O H2O::expand(double pout) const
 {
 	if (_data.region == H2O_REGION5)
-		throw std::runtime_error("Expansion not supported in that region");
+		throw std::range_error("Expansion not supported in region 5");
 
 	return H2O::ps(pout, s());
 }
