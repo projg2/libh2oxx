@@ -165,17 +165,8 @@ double H2O::s() const
 
 H2O H2O::expand(double pout) const
 {
-	switch (_data.region)
-	{
-		case Region::R2:
-		case Region::R3:
-		case Region::R4:
-			break;
-		case Region::R1: // unable to expand water
-		case Region::R5: // lack of f(p,s)
-		default:
-			throw std::runtime_error("Expansion not supported in that region");
-	}
+	if (_data.region == H2O_REGION5)
+		throw std::runtime_error("Expansion not supported in that region");
 
 	return H2O::ps(pout, s());
 }
