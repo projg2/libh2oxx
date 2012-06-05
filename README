@@ -1,0 +1,53 @@
+====================================
+libh2o++ -- a C++ wrapper for libh2o
+====================================
+:Author: Michał Górny
+:Copyright: 2-clause BSD license
+:Homepage: https://bitbucket.org/mgorny/libh2oxx/
+:Issue tracker: https://bitbucket.org/mgorny/libh2oxx/issues/
+
+
+Introduction
+-------------
+
+libh2o++ is just a simple C++ interface to libh2o_. It wraps
+the high-level API types and functions into nice C++ clases with minimal
+overhead.
+
+.. _libh2o: https://bitbucket.org/mgorny/libh2o/
+
+API documentation
+------------------
+
+The API is shortly described in the installed header files.
+
+For linking to the library, the *libh2oxx* pkg-config package should be
+used.
+
+A simple use example::
+
+	#include <iostream> /* for output */
+	#include <stdexcept>
+
+	#include <h2o>
+
+	int main()
+	{
+		h2o::H2O water;
+
+		try
+		{
+			water = h2o::H2O::pT(10, 773.15); /* [MPa, K] */
+		}
+		catch (std::range_error)
+		{
+			std::cerr << "Invalid parameters." << std::endl;
+			return 1;
+		}
+
+		std::cout << "h = " << water.h() << std::endl;
+
+		return 0;
+	}
+
+.. vim:syn=rst
