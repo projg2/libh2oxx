@@ -168,6 +168,30 @@ double H2O::s() const
 	return h2o_get_s(_data);
 }
 
+double H2O::cp() const
+{
+	if (_data.region == H2O_REGION_OUT_OF_RANGE)
+		uninitialized();
+
+	return h2o_get_cp(_data);
+}
+
+double H2O::cv() const
+{
+	if (_data.region == H2O_REGION_OUT_OF_RANGE)
+		uninitialized();
+
+	return h2o_get_cv(_data);
+}
+
+double H2O::w() const
+{
+	if (_data.region == H2O_REGION_OUT_OF_RANGE)
+		uninitialized();
+
+	return h2o_get_w(_data);
+}
+
 H2O H2O::expand(double pout) const
 {
 	if (_data.region == H2O_REGION5)

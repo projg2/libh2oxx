@@ -70,6 +70,9 @@ namespace h2o
 	 * h - specific enthalpy [kJ/kg],
 	 * s - specific enthropy [kJ/kgK],
 	 * v - specific volume [m³/kg],
+	 * cp - specific isobaric heat capacity [kJ/kgK],
+	 * cv - specific isochoric heat capacity [kJ/kgK],
+	 * w - speed of sound [m/s],
 	 * rho - density [kg/m³],
 	 * x - dryness [0..1].
 	 */
@@ -150,6 +153,9 @@ namespace h2o
 		double u() const;
 		double h() const;
 		double s() const;
+		double cp() const;
+		double cv() const;
+		double w() const;
 
 		/**
 		 * Perform an expansion calculation from the current state

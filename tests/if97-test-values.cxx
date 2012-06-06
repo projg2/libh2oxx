@@ -38,6 +38,12 @@ class Tests
 			return "s";
 		else if (prop == &h2o::H2O::v)
 			return "v";
+		else if (prop == &h2o::H2O::cp)
+			return "cp";
+		else if (prop == &h2o::H2O::cv)
+			return "cv";
+		else if (prop == &h2o::H2O::w)
+			return "w";
 		else if (prop == &h2o::H2O::rho)
 			return "rho";
 
@@ -143,7 +149,9 @@ public:
 			double v_expected, double v_precision,
 			double u_expected, double u_precision,
 			double h_expected, double h_precision,
-			double s_expected, double s_precision)
+			double s_expected, double s_precision,
+			double cp_expected, double cp_precision,
+			double w_expected, double w_precision)
 	{
 		check_any(&h2o::H2O::pT, p, T, &h2o::H2O::v,
 				v_expected, v_precision);
@@ -153,13 +161,19 @@ public:
 				h_expected, h_precision);
 		check_any(&h2o::H2O::pT, p, T, &h2o::H2O::s,
 				s_expected, s_precision);
+		check_any(&h2o::H2O::pT, p, T, &h2o::H2O::cp,
+				cp_expected, cp_precision);
+		check_any(&h2o::H2O::pT, p, T, &h2o::H2O::w,
+				w_expected, w_precision);
 	}
 
 	void check_puhs(double rho, double T,
 			double p_expected, double p_precision,
 			double u_expected, double u_precision,
 			double h_expected, double h_precision,
-			double s_expected, double s_precision)
+			double s_expected, double s_precision,
+			double cp_expected, double cp_precision,
+			double w_expected, double w_precision)
 	{
 		check_any(&h2o::H2O::rhoT, rho, T, &h2o::H2O::p,
 				p_expected, p_precision);
@@ -169,6 +183,10 @@ public:
 				h_expected, h_precision);
 		check_any(&h2o::H2O::rhoT, rho, T, &h2o::H2O::s,
 				s_expected, s_precision);
+		check_any(&h2o::H2O::rhoT, rho, T, &h2o::H2O::cp,
+				cp_expected, cp_precision);
+		check_any(&h2o::H2O::rhoT, rho, T, &h2o::H2O::w,
+				w_expected, w_precision);
 	}
 
 	void check_Tv(obj_constr constr, double arg1, double arg2,
@@ -200,68 +218,92 @@ int main(void)
 			0.100215168E-2, 1E-11,
 			0.112324818E+3, 1E-6,
 			0.115331273E+3, 1E-6,
-			0.392294792E+0, 1E-9);
+			0.392294792E+0, 1E-9,
+			0.417301218E+1, 1E-8,
+			0.150773921E+4, 1E-5);
 	t.check_vuhs(80, 300,
 			0.971180894E-3, 1E-12,
 			0.106448356E+3, 1E-6,
 			0.184142828E+3, 1E-6,
-			0.368563852E+0, 1E-9);
+			0.368563852E+0, 1E-9,
+			0.401008987E+1, 1E-8,
+			0.163469054E+4, 1E-5);
 	t.check_vuhs(3., 500,
 			0.120241800E-2, 1E-11,
 			0.971934985E+3, 1E-6,
 			0.975542239E+3, 1E-6,
-			0.258041912E+1, 1E-8);
+			0.258041912E+1, 1E-8,
+			0.465580682E+1, 1E-8,
+			0.124071337E+4, 1E-5);
 
 	// Region 2
 	t.check_vuhs(35E-4, 300,
 			0.394913866E+2, 1E-7,
 			0.241169160E+4, 1E-5,
 			0.254991145E+4, 1E-5,
-			0.852238967E+1, 1E-8);
+			0.852238967E+1, 1E-8,
+			0.191300162E+1, 1E-8,
+			0.427920172E+3, 1E-6);
 	t.check_vuhs(35E-4, 700,
 			0.923015898E+2, 1E-7,
 			0.301262819E+4, 1E-5,
 			0.333568375E+4, 1E-5,
-			0.101749996E+2, 1E-7);
+			0.101749996E+2, 1E-7,
+			0.208141274E+1, 1E-8,
+			0.644289068E+3, 1E-6);
 	t.check_vuhs(30E+0, 700,
 			0.542946619E-2, 1E-11,
 			0.246861076E+4, 1E-5,
 			0.263149474E+4, 1E-5,
-			0.517540298E+1, 1E-8);
+			0.517540298E+1, 1E-8,
+			0.103505092E+2, 1E-7,
+			0.480386523E+3, 1E-6);
 
 	// Region 3
 	t.check_puhs(500, 650,
 			0.255837018E2, 1E-7,
 			0.181226279E4, 1E-5,
 			0.186343019E4, 1E-5,
-			0.405427273E1, 1E-8);
+			0.405427273E1, 1E-8,
+			0.138935717E2, 1E-7,
+			0.502005554E3, 1E-6);
 	t.check_puhs(200, 650,
 			0.222930643E2, 1E-7,
 			0.226365868E4, 1E-5,
 			0.237512401E4, 1E-5,
-			0.485438792E1, 1E-8);
+			0.485438792E1, 1E-8,
+			0.446579342E2, 1E-7,
+			0.383444594E3, 1E-6);
 	t.check_puhs(500, 750,
 			0.783095639E2, 1E-7,
 			0.210206932E4, 1E-5,
 			0.225868845E4, 1E-5,
-			0.446971906E1, 1E-8);
+			0.446971906E1, 1E-8,
+			0.634165359E1, 1E-8,
+			0.760696041E3, 1E-6);
 
 	// Region 5
 	t.check_vuhs(.5, 1500,
 			0.138455090E+1, 1E-8,
 			0.452749310E+4, 1E-5,
 			0.521976855E+4, 1E-5,
-			0.965408875E+1, 1E-8);
+			0.965408875E+1, 1E-8,
+			0.261609445E+1, 1E-8,
+			0.917068690E+3, 1E-6);
 	t.check_vuhs(30, 1500,
 			0.230761299E-1, 1E-10,
 			0.447495124E+4, 1E-5,
 			0.516723514E+4, 1E-5,
-			0.772970133E+1, 1E-8);
+			0.772970133E+1, 1E-8,
+			0.272724317E+1, 1E-8,
+			0.928548002E+3, 1E-6);
 	t.check_vuhs(30, 2000,
 			0.311385219E-1, 1E-10,
 			0.563707038E+4, 1E-5,
 			0.657122604E+4, 1E-5,
-			0.853640523E+1, 1E-8);
+			0.853640523E+1, 1E-8,
+			0.288569882E+1, 1E-8,
+			0.106736948E+4, 1E-5);
 
 	// saturation line
 	t.check_any(h2o::H2O::Tx, 300, 1, &h2o::H2O::p,
