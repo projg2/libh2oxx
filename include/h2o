@@ -139,10 +139,6 @@ namespace h2o
 		 * Note: it is unallowed to get x() on a Region 3 state point.
 		 * If you'd like to use x() getter, you have to check the region
 		 * first.
-		 *
-		 * Another note: right now, most of invalid uses result in
-		 * std::runtime_error. This is not part of the API, and must not
-		 * be relied upon. Soon the code will use assert() instead.
 		 */
 		double p() const;
 		double T() const;
