@@ -1,5 +1,8 @@
 AC_PREREQ([2.60])
-AC_INIT([libh2oxx], [0.2])
+AC_INIT([libh2o++], [0.2],
+		[https://bitbucket.org/mgorny/libh2oxx/issues/],
+		[libh2oxx],
+		[https://bitbucket.org/mgorny/libh2oxx/])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([1.6 foreign dist-bzip2 subdir-objects])
