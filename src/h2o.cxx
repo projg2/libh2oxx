@@ -25,7 +25,6 @@ namespace h2o
 }
 
 using namespace h2o;
-using namespace h2o::internals;
 
 typedef double (*twoarg_func_t)(double, double);
 
@@ -90,7 +89,7 @@ H2O H2O::rhoT(double rho, double T)
 
 bool H2O::initialized() const
 {
-	return _data.region != H2O_REGION_OUT_OF_RANGE;
+	return _data.region != internals::H2O_REGION_OUT_OF_RANGE;
 }
 
 Region H2O::region() const
@@ -178,7 +177,7 @@ double H2O::w() const
 
 H2O H2O::expand(double pout) const
 {
-	if (_data.region == H2O_REGION5)
+	if (region() == Region::R5)
 		throw std::range_error("Expansion not supported in region 5");
 
 	return H2O::ps(pout, s());
