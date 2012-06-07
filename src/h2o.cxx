@@ -7,6 +7,7 @@
 #	include "config.h"
 #endif
 
+#include <cassert>
 #include <stdexcept>
 
 #include "h2o"
@@ -27,11 +28,6 @@ using namespace h2o;
 using namespace h2o::internals;
 
 typedef double (*twoarg_func_t)(double, double);
-
-static inline void uninitialized()
-{
-	throw std::runtime_error("Requesting parameters from uninitialized H2O.");
-}
 
 static inline void out_of_range()
 {
@@ -104,90 +100,78 @@ Region H2O::region() const
 
 double H2O::p() const
 {
-	if (_data.region == H2O_REGION_OUT_OF_RANGE)
-		uninitialized();
+	assert(initialized());
 
 	return h2o_get_p(_data);
 }
 
 double H2O::T() const
 {
-	if (_data.region == H2O_REGION_OUT_OF_RANGE)
-		uninitialized();
+	assert(initialized());
 
 	return h2o_get_T(_data);
 }
 
 double H2O::x() const
 {
-	if (_data.region == H2O_REGION_OUT_OF_RANGE)
-		uninitialized();
-	if (_data.region == H2O_REGION3)
-		throw std::runtime_error("x undefined in Region 3.");
+	assert(initialized());
+	assert(region() != Region::R3);
 
 	return h2o_get_x(_data);
 }
 
 double H2O::rho() const
 {
-	if (_data.region == H2O_REGION_OUT_OF_RANGE)
-		uninitialized();
+	assert(initialized());
 
 	return h2o_get_rho(_data);
 }
 
 double H2O::v() const
 {
-	if (_data.region == H2O_REGION_OUT_OF_RANGE)
-		uninitialized();
+	assert(initialized());
 
 	return h2o_get_v(_data);
 }
 
 double H2O::u() const
 {
-	if (_data.region == H2O_REGION_OUT_OF_RANGE)
-		uninitialized();
+	assert(initialized());
 
 	return h2o_get_u(_data);
 }
 
 double H2O::h() const
 {
-	if (_data.region == H2O_REGION_OUT_OF_RANGE)
-		uninitialized();
+	assert(initialized());
 
 	return h2o_get_h(_data);
 }
 
 double H2O::s() const
 {
-	if (_data.region == H2O_REGION_OUT_OF_RANGE)
-		uninitialized();
+	assert(initialized());
 
 	return h2o_get_s(_data);
 }
 
 double H2O::cp() const
 {
-	if (_data.region == H2O_REGION_OUT_OF_RANGE)
-		uninitialized();
+	assert(initialized());
 
 	return h2o_get_cp(_data);
 }
 
 double H2O::cv() const
 {
-	if (_data.region == H2O_REGION_OUT_OF_RANGE)
-		uninitialized();
+	assert(initialized());
 
 	return h2o_get_cv(_data);
 }
 
 double H2O::w() const
 {
-	if (_data.region == H2O_REGION_OUT_OF_RANGE)
-		uninitialized();
+	assert(initialized());
 
 	return h2o_get_w(_data);
 }
