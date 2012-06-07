@@ -1,5 +1,8 @@
 ACLOCAL_AMFLAGS = -I m4
 
+# ensure that assertions will be thrown in distcheck
+DISTCHECK_CONFIGURE_FLAGS = --enable-debug
+
 h2oxxdir = $(includedir)/h2o/cxx
 pkgconfigdir = $(libdir)/pkgconfig
 
